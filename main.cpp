@@ -70,6 +70,8 @@ int _main(std::string pattern, unsigned start, unsigned count_max = 1) {
                 std::copy(_key.cbegin(), _key.cend(), std::ostreambuf_iterator<char>(fs));
                 fs.close();
 
+                auto t1 = std::chrono::steady_clock::now();
+                std::chrono::duration<double> elapsed = t1 - t0;
                 sprintf(f_buffer, "python3 found.py result-%08x%08x.bin %08x%08x %d %d", result_time, (unsigned)i, result_time, (unsigned)i, count, elapsed.count());
                 system(f_buffer);
                 count_max -= 1;
