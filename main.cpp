@@ -22,14 +22,14 @@ void signal_handler(int sig) {
 }
 
 char buffer[30];
-char f_buffer[120];
+char f_buffer[220];
 
 int _main(std::string pattern, unsigned start, unsigned count_max = 1) {
     signal(SIGINT, signal_handler);
     signal(SIGTERM, signal_handler);
     umask(0077);
 
-    const int thread_per_block = 1024;
+    const int thread_per_block = 256;
     const int time_offset = 1ull << 26;
 
     const int num_block = time_offset / thread_per_block;
@@ -72,7 +72,7 @@ int _main(std::string pattern, unsigned start, unsigned count_max = 1) {
 
                 auto t1 = std::chrono::steady_clock::now();
                 std::chrono::duration<double> elapsed = t1 - t0;
-                sprintf(f_buffer, "python3 found.py result-%08x%08x.bin %08x%08x %d %d", result_time, (unsigned)i, result_time, (unsigned)i, count, elapsed.count());
+                sprintf(f_buffer, "python3 found.py result-%08x%08x.bin %08x%08x %lld %lld", result_time, (unsigned)i, result_time, (unsigned)i, (long long)count, (long long)elapsed.count());
                 system(f_buffer);
                 count_max -= 1;
                 if (count_max == 0) {
